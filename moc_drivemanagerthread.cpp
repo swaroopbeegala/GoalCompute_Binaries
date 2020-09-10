@@ -87,8 +87,8 @@ int DriveManagerThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     return _id;
 }
 struct qt_meta_stringdata_DriveManagerWorker_t {
-    QByteArrayData data[20];
-    char stringdata0[203];
+    QByteArrayData data[27];
+    char stringdata0[284];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -116,7 +116,14 @@ QT_MOC_LITERAL(15, 171, 12), // "FindCommands"
 QT_MOC_LITERAL(16, 184, 1), // "x"
 QT_MOC_LITERAL(17, 186, 1), // "y"
 QT_MOC_LITERAL(18, 188, 5), // "theta"
-QT_MOC_LITERAL(19, 194, 8) // "Finished"
+QT_MOC_LITERAL(19, 194, 8), // "Finished"
+QT_MOC_LITERAL(20, 203, 18), // "OnConnectiontoHost"
+QT_MOC_LITERAL(21, 222, 14), // "OnSubscription"
+QT_MOC_LITERAL(22, 237, 5), // "topic"
+QT_MOC_LITERAL(23, 243, 3), // "qos"
+QT_MOC_LITERAL(24, 247, 17), // "OnMessageRecieved"
+QT_MOC_LITERAL(25, 265, 14), // "QMQTT::Message"
+QT_MOC_LITERAL(26, 280, 3) // "msg"
 
     },
     "DriveManagerWorker\0OdometryParameters\0"
@@ -124,7 +131,9 @@ QT_MOC_LITERAL(19, 194, 8) // "Finished"
     "Estop\0ResetFaults\0StartDrive\0Reverse\0"
     "TurnAngle\0QrCameraError\0Disable\0Error\0"
     "vSlottoStartWorker\0FindCommands\0x\0y\0"
-    "theta\0Finished"
+    "theta\0Finished\0OnConnectiontoHost\0"
+    "OnSubscription\0topic\0qos\0OnMessageRecieved\0"
+    "QMQTT::Message\0msg"
 };
 #undef QT_MOC_LITERAL
 
@@ -134,7 +143,7 @@ static const uint qt_meta_data_DriveManagerWorker[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
+      18,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -142,23 +151,26 @@ static const uint qt_meta_data_DriveManagerWorker[] = {
       12,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    3,   89,    2, 0x06 /* Public */,
-       3,    7,   96,    2, 0x06 /* Public */,
-       4,    3,  111,    2, 0x06 /* Public */,
-       5,    1,  118,    2, 0x06 /* Public */,
-       6,    0,  121,    2, 0x06 /* Public */,
-       7,    0,  122,    2, 0x06 /* Public */,
-       8,    0,  123,    2, 0x06 /* Public */,
-       9,    1,  124,    2, 0x06 /* Public */,
-      10,    1,  127,    2, 0x06 /* Public */,
-      11,    1,  130,    2, 0x06 /* Public */,
-      12,    0,  133,    2, 0x06 /* Public */,
-      13,    1,  134,    2, 0x06 /* Public */,
+       1,    3,  104,    2, 0x06 /* Public */,
+       3,    7,  111,    2, 0x06 /* Public */,
+       4,    3,  126,    2, 0x06 /* Public */,
+       5,    1,  133,    2, 0x06 /* Public */,
+       6,    0,  136,    2, 0x06 /* Public */,
+       7,    0,  137,    2, 0x06 /* Public */,
+       8,    0,  138,    2, 0x06 /* Public */,
+       9,    1,  139,    2, 0x06 /* Public */,
+      10,    1,  142,    2, 0x06 /* Public */,
+      11,    1,  145,    2, 0x06 /* Public */,
+      12,    0,  148,    2, 0x06 /* Public */,
+      13,    1,  149,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-      14,    0,  137,    2, 0x0a /* Public */,
-      15,    3,  138,    2, 0x0a /* Public */,
-      19,    0,  145,    2, 0x0a /* Public */,
+      14,    0,  152,    2, 0x0a /* Public */,
+      15,    3,  153,    2, 0x0a /* Public */,
+      19,    0,  160,    2, 0x0a /* Public */,
+      20,    0,  161,    2, 0x0a /* Public */,
+      21,    2,  162,    2, 0x0a /* Public */,
+      24,    1,  167,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Float, QMetaType::Float, QMetaType::Float,    2,    2,    2,
@@ -178,6 +190,9 @@ static const uint qt_meta_data_DriveManagerWorker[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Double, QMetaType::Double, QMetaType::Double,   16,   17,   18,
     QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void, QMetaType::QString, QMetaType::UChar,   22,   23,
+    QMetaType::Void, 0x80000000 | 25,   26,
 
        0        // eod
 };
@@ -203,7 +218,21 @@ void DriveManagerWorker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         case 12: _t->vSlottoStartWorker(); break;
         case 13: _t->FindCommands((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< double(*)>(_a[2])),(*reinterpret_cast< double(*)>(_a[3]))); break;
         case 14: _t->Finished(); break;
+        case 15: _t->OnConnectiontoHost(); break;
+        case 16: _t->OnSubscription((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< quint8(*)>(_a[2]))); break;
+        case 17: _t->OnMessageRecieved((*reinterpret_cast< QMQTT::Message(*)>(_a[1]))); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        switch (_id) {
+        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+        case 17:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QMQTT::Message >(); break;
+            }
+            break;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
@@ -308,13 +337,13 @@ int DriveManagerWorker::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 15)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 15;
+        _id -= 18;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 15)
-            *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 15;
+        if (_id < 18)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 18;
     }
     return _id;
 }

@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -m64 -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -m64 -pipe -g -std=c++0x -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../Goal_Compute_Testing -I. -I../Goal_Compute_Testing/DriveManager -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
+INCPATH       = -I../Goal_Compute_Testing -I. -I../Goal_Compute_Testing/DriveManager -I../Goal_Compute_Testing/mqtt -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64
 QMAKE         = /usr/lib/x86_64-linux-gnu/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -36,7 +36,7 @@ DISTNAME      = Goal_Compute_Testing1.0.0
 DISTDIR = /home/ramesh/build-Goal_Compute_Testing-Desktop-Debug/.tmp/Goal_Compute_Testing1.0.0
 LINK          = g++
 LFLAGS        = -m64
-LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/X11R6/lib64 -lQt5Widgets -lQt5Gui -lQt5Network -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -50,16 +50,52 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../Goal_Compute_Testing/DriveManager/drivemanagermodule.cpp \
 		../Goal_Compute_Testing/DriveManager/drivemanagerthread.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_client_p.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_client.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_frame.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_message.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_network.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_router.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_socket.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_timer.cpp \
 		../Goal_Compute_Testing/main.cpp \
 		../Goal_Compute_Testing/mainwindow.cpp moc_drivemanagermodule.cpp \
 		moc_drivemanagerthread.cpp \
+		moc_qmqtt_client.cpp \
+		moc_qmqtt_routesubscription.cpp \
+		moc_qmqtt_router.cpp \
+		moc_qmqtt_networkinterface.cpp \
+		moc_qmqtt_socketinterface.cpp \
+		moc_qmqtt_timerinterface.cpp \
+		moc_qmqtt_network_p.cpp \
+		moc_qmqtt_socket_p.cpp \
+		moc_qmqtt_timer_p.cpp \
 		moc_mainwindow.cpp
 OBJECTS       = drivemanagermodule.o \
 		drivemanagerthread.o \
+		qmqtt_client_p.o \
+		qmqtt_client.o \
+		qmqtt_frame.o \
+		qmqtt_message.o \
+		qmqtt_network.o \
+		qmqtt_routesubscription.o \
+		qmqtt_router.o \
+		qmqtt_socket.o \
+		qmqtt_timer.o \
 		main.o \
 		mainwindow.o \
 		moc_drivemanagermodule.o \
 		moc_drivemanagerthread.o \
+		moc_qmqtt_client.o \
+		moc_qmqtt_routesubscription.o \
+		moc_qmqtt_router.o \
+		moc_qmqtt_networkinterface.o \
+		moc_qmqtt_socketinterface.o \
+		moc_qmqtt_timerinterface.o \
+		moc_qmqtt_network_p.o \
+		moc_qmqtt_socket_p.o \
+		moc_qmqtt_timer_p.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -137,6 +173,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
 		../Goal_Compute_Testing/DriveManager/DriveManager.pri \
+		../Goal_Compute_Testing/mqtt/qmqtt.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/c++11.prf \
@@ -154,8 +191,31 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../Goal_Compute_Testing/Goal_Compute_Testing.pro ../Goal_Compute_Testing/DriveManager/drivemanagermodule.h \
 		../Goal_Compute_Testing/DriveManager/drivemanagerthread.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_client.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_frame.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_message.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_routedmessage.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_router.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_networkinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_socketinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_timerinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_client_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_message_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_network_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_socket_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_timer_p.h \
 		../Goal_Compute_Testing/mainwindow.h ../Goal_Compute_Testing/DriveManager/drivemanagermodule.cpp \
 		../Goal_Compute_Testing/DriveManager/drivemanagerthread.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_client_p.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_client.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_frame.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_message.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_network.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_router.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_socket.cpp \
+		../Goal_Compute_Testing/mqtt/qmqtt_timer.cpp \
 		../Goal_Compute_Testing/main.cpp \
 		../Goal_Compute_Testing/mainwindow.cpp
 QMAKE_TARGET  = Goal_Compute_Testing
@@ -264,6 +324,7 @@ Makefile: ../Goal_Compute_Testing/Goal_Compute_Testing.pro /usr/lib/x86_64-linux
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
 		../Goal_Compute_Testing/DriveManager/DriveManager.pri \
+		../Goal_Compute_Testing/mqtt/qmqtt.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/c++11.prf \
@@ -282,6 +343,7 @@ Makefile: ../Goal_Compute_Testing/Goal_Compute_Testing.pro /usr/lib/x86_64-linux
 		../Goal_Compute_Testing/Goal_Compute_Testing.pro \
 		/usr/lib/x86_64-linux-gnu/libQt5Widgets.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Gui.prl \
+		/usr/lib/x86_64-linux-gnu/libQt5Network.prl \
 		/usr/lib/x86_64-linux-gnu/libQt5Core.prl
 	$(QMAKE) -spec linux-g++-64 CONFIG+=debug CONFIG+=qml_debug -o Makefile ../Goal_Compute_Testing/Goal_Compute_Testing.pro
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf:
@@ -360,6 +422,7 @@ Makefile: ../Goal_Compute_Testing/Goal_Compute_Testing.pro /usr/lib/x86_64-linux
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
 ../Goal_Compute_Testing/DriveManager/DriveManager.pri:
+../Goal_Compute_Testing/mqtt/qmqtt.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/resolve_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_post.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/c++11.prf:
@@ -378,6 +441,7 @@ Makefile: ../Goal_Compute_Testing/Goal_Compute_Testing.pro /usr/lib/x86_64-linux
 ../Goal_Compute_Testing/Goal_Compute_Testing.pro:
 /usr/lib/x86_64-linux-gnu/libQt5Widgets.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Gui.prl:
+/usr/lib/x86_64-linux-gnu/libQt5Network.prl:
 /usr/lib/x86_64-linux-gnu/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -spec linux-g++-64 CONFIG+=debug CONFIG+=qml_debug -o Makefile ../Goal_Compute_Testing/Goal_Compute_Testing.pro
@@ -393,8 +457,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../Goal_Compute_Testing/DriveManager/drivemanagermodule.h ../Goal_Compute_Testing/DriveManager/drivemanagerthread.h ../Goal_Compute_Testing/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../Goal_Compute_Testing/DriveManager/drivemanagermodule.cpp ../Goal_Compute_Testing/DriveManager/drivemanagerthread.cpp ../Goal_Compute_Testing/main.cpp ../Goal_Compute_Testing/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../Goal_Compute_Testing/DriveManager/drivemanagermodule.h ../Goal_Compute_Testing/DriveManager/drivemanagerthread.h ../Goal_Compute_Testing/mqtt/qmqtt_client.h ../Goal_Compute_Testing/mqtt/qmqtt_frame.h ../Goal_Compute_Testing/mqtt/qmqtt_message.h ../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.h ../Goal_Compute_Testing/mqtt/qmqtt_routedmessage.h ../Goal_Compute_Testing/mqtt/qmqtt_router.h ../Goal_Compute_Testing/mqtt/qmqtt_networkinterface.h ../Goal_Compute_Testing/mqtt/qmqtt_socketinterface.h ../Goal_Compute_Testing/mqtt/qmqtt_timerinterface.h ../Goal_Compute_Testing/mqtt/qmqtt_client_p.h ../Goal_Compute_Testing/mqtt/qmqtt_message_p.h ../Goal_Compute_Testing/mqtt/qmqtt_network_p.h ../Goal_Compute_Testing/mqtt/qmqtt_socket_p.h ../Goal_Compute_Testing/mqtt/qmqtt_timer_p.h ../Goal_Compute_Testing/mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../Goal_Compute_Testing/DriveManager/drivemanagermodule.cpp ../Goal_Compute_Testing/DriveManager/drivemanagerthread.cpp ../Goal_Compute_Testing/mqtt/qmqtt_client_p.cpp ../Goal_Compute_Testing/mqtt/qmqtt_client.cpp ../Goal_Compute_Testing/mqtt/qmqtt_frame.cpp ../Goal_Compute_Testing/mqtt/qmqtt_message.cpp ../Goal_Compute_Testing/mqtt/qmqtt_network.cpp ../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.cpp ../Goal_Compute_Testing/mqtt/qmqtt_router.cpp ../Goal_Compute_Testing/mqtt/qmqtt_socket.cpp ../Goal_Compute_Testing/mqtt/qmqtt_timer.cpp ../Goal_Compute_Testing/main.cpp ../Goal_Compute_Testing/mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../Goal_Compute_Testing/mainwindow.ui $(DISTDIR)/
 
 
@@ -418,18 +482,57 @@ check: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_drivemanagermodule.cpp moc_drivemanagerthread.cpp moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_drivemanagermodule.cpp moc_drivemanagerthread.cpp moc_qmqtt_client.cpp moc_qmqtt_routesubscription.cpp moc_qmqtt_router.cpp moc_qmqtt_networkinterface.cpp moc_qmqtt_socketinterface.cpp moc_qmqtt_timerinterface.cpp moc_qmqtt_network_p.cpp moc_qmqtt_socket_p.cpp moc_qmqtt_timer_p.cpp moc_mainwindow.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_drivemanagermodule.cpp moc_drivemanagerthread.cpp moc_mainwindow.cpp
+	-$(DEL_FILE) moc_drivemanagermodule.cpp moc_drivemanagerthread.cpp moc_qmqtt_client.cpp moc_qmqtt_routesubscription.cpp moc_qmqtt_router.cpp moc_qmqtt_networkinterface.cpp moc_qmqtt_socketinterface.cpp moc_qmqtt_timerinterface.cpp moc_qmqtt_network_p.cpp moc_qmqtt_socket_p.cpp moc_qmqtt_timer_p.cpp moc_mainwindow.cpp
 moc_drivemanagermodule.cpp: ../Goal_Compute_Testing/DriveManager/drivemanagerthread.h \
 		../Goal_Compute_Testing/DriveManager/drivemanagermodule.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/DriveManager/drivemanagermodule.h -o moc_drivemanagermodule.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/DriveManager/drivemanagermodule.h -o moc_drivemanagermodule.cpp
 
 moc_drivemanagerthread.cpp: ../Goal_Compute_Testing/DriveManager/drivemanagerthread.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/DriveManager/drivemanagerthread.h -o moc_drivemanagerthread.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/DriveManager/drivemanagerthread.h -o moc_drivemanagerthread.cpp
+
+moc_qmqtt_client.cpp: ../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_client.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mqtt/qmqtt_client.h -o moc_qmqtt_client.cpp
+
+moc_qmqtt_routesubscription.cpp: ../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.h -o moc_qmqtt_routesubscription.cpp
+
+moc_qmqtt_router.cpp: ../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_router.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mqtt/qmqtt_router.h -o moc_qmqtt_router.cpp
+
+moc_qmqtt_networkinterface.cpp: ../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_networkinterface.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mqtt/qmqtt_networkinterface.h -o moc_qmqtt_networkinterface.cpp
+
+moc_qmqtt_socketinterface.cpp: ../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_socketinterface.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mqtt/qmqtt_socketinterface.h -o moc_qmqtt_socketinterface.cpp
+
+moc_qmqtt_timerinterface.cpp: ../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_timerinterface.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mqtt/qmqtt_timerinterface.h -o moc_qmqtt_timerinterface.cpp
+
+moc_qmqtt_network_p.cpp: ../Goal_Compute_Testing/mqtt/qmqtt_networkinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_network_p.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mqtt/qmqtt_network_p.h -o moc_qmqtt_network_p.cpp
+
+moc_qmqtt_socket_p.cpp: ../Goal_Compute_Testing/mqtt/qmqtt_socketinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_socket_p.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mqtt/qmqtt_socket_p.h -o moc_qmqtt_socket_p.cpp
+
+moc_qmqtt_timer_p.cpp: ../Goal_Compute_Testing/mqtt/qmqtt_timerinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_timer_p.h
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mqtt/qmqtt_timer_p.h -o moc_qmqtt_timer_p.cpp
 
 moc_mainwindow.cpp: ../Goal_Compute_Testing/mainwindow.h
-	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mainwindow.h -o moc_mainwindow.cpp
+	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/ramesh/Goal_Compute_Testing -I/home/ramesh/Goal_Compute_Testing/DriveManager -I/home/ramesh/Goal_Compute_Testing/mqtt -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../Goal_Compute_Testing/mainwindow.h -o moc_mainwindow.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -456,6 +559,66 @@ drivemanagermodule.o: ../Goal_Compute_Testing/DriveManager/drivemanagermodule.cp
 drivemanagerthread.o: ../Goal_Compute_Testing/DriveManager/drivemanagerthread.cpp ../Goal_Compute_Testing/DriveManager/drivemanagerthread.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o drivemanagerthread.o ../Goal_Compute_Testing/DriveManager/drivemanagerthread.cpp
 
+qmqtt_client_p.o: ../Goal_Compute_Testing/mqtt/qmqtt_client_p.cpp ../Goal_Compute_Testing/mqtt/qmqtt_client_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_client.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_network_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_networkinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_frame.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_message.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmqtt_client_p.o ../Goal_Compute_Testing/mqtt/qmqtt_client_p.cpp
+
+qmqtt_client.o: ../Goal_Compute_Testing/mqtt/qmqtt_client.cpp ../Goal_Compute_Testing/mqtt/qmqtt_client.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_client_p.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmqtt_client.o ../Goal_Compute_Testing/mqtt/qmqtt_client.cpp
+
+qmqtt_frame.o: ../Goal_Compute_Testing/mqtt/qmqtt_frame.cpp ../Goal_Compute_Testing/mqtt/qmqtt_frame.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmqtt_frame.o ../Goal_Compute_Testing/mqtt/qmqtt_frame.cpp
+
+qmqtt_message.o: ../Goal_Compute_Testing/mqtt/qmqtt_message.cpp ../Goal_Compute_Testing/mqtt/qmqtt_message.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_message_p.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmqtt_message.o ../Goal_Compute_Testing/mqtt/qmqtt_message.cpp
+
+qmqtt_network.o: ../Goal_Compute_Testing/mqtt/qmqtt_network.cpp ../Goal_Compute_Testing/mqtt/qmqtt_network_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_networkinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_socket_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_socketinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_ssl_socket_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_timer_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_timerinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_websocket_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_websocketiodevice_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_frame.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmqtt_network.o ../Goal_Compute_Testing/mqtt/qmqtt_network.cpp
+
+qmqtt_routesubscription.o: ../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.cpp ../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_router.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_client.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_routedmessage.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_message.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmqtt_routesubscription.o ../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.cpp
+
+qmqtt_router.o: ../Goal_Compute_Testing/mqtt/qmqtt_router.cpp ../Goal_Compute_Testing/mqtt/qmqtt_router.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_client.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_routesubscription.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmqtt_router.o ../Goal_Compute_Testing/mqtt/qmqtt_router.cpp
+
+qmqtt_socket.o: ../Goal_Compute_Testing/mqtt/qmqtt_socket.cpp ../Goal_Compute_Testing/mqtt/qmqtt_socket_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_socketinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmqtt_socket.o ../Goal_Compute_Testing/mqtt/qmqtt_socket.cpp
+
+qmqtt_timer.o: ../Goal_Compute_Testing/mqtt/qmqtt_timer.cpp ../Goal_Compute_Testing/mqtt/qmqtt_timer_p.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_timerinterface.h \
+		../Goal_Compute_Testing/mqtt/qmqtt_global.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qmqtt_timer.o ../Goal_Compute_Testing/mqtt/qmqtt_timer.cpp
+
 main.o: ../Goal_Compute_Testing/main.cpp ../Goal_Compute_Testing/mainwindow.h \
 		../Goal_Compute_Testing/DriveManager/drivemanagermodule.h \
 		../Goal_Compute_Testing/DriveManager/drivemanagerthread.h
@@ -470,6 +633,33 @@ moc_drivemanagermodule.o: moc_drivemanagermodule.cpp
 
 moc_drivemanagerthread.o: moc_drivemanagerthread.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_drivemanagerthread.o moc_drivemanagerthread.cpp
+
+moc_qmqtt_client.o: moc_qmqtt_client.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qmqtt_client.o moc_qmqtt_client.cpp
+
+moc_qmqtt_routesubscription.o: moc_qmqtt_routesubscription.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qmqtt_routesubscription.o moc_qmqtt_routesubscription.cpp
+
+moc_qmqtt_router.o: moc_qmqtt_router.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qmqtt_router.o moc_qmqtt_router.cpp
+
+moc_qmqtt_networkinterface.o: moc_qmqtt_networkinterface.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qmqtt_networkinterface.o moc_qmqtt_networkinterface.cpp
+
+moc_qmqtt_socketinterface.o: moc_qmqtt_socketinterface.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qmqtt_socketinterface.o moc_qmqtt_socketinterface.cpp
+
+moc_qmqtt_timerinterface.o: moc_qmqtt_timerinterface.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qmqtt_timerinterface.o moc_qmqtt_timerinterface.cpp
+
+moc_qmqtt_network_p.o: moc_qmqtt_network_p.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qmqtt_network_p.o moc_qmqtt_network_p.cpp
+
+moc_qmqtt_socket_p.o: moc_qmqtt_socket_p.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qmqtt_socket_p.o moc_qmqtt_socket_p.cpp
+
+moc_qmqtt_timer_p.o: moc_qmqtt_timer_p.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qmqtt_timer_p.o moc_qmqtt_timer_p.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
